@@ -43,9 +43,21 @@ class TestMilestone3(unittest.TestCase):
         self.assertEqual(len(c.enrolled_roster), 1)
 
     def test_sort(self):
-        arr = [3, 1, 2]
-        self.assertEqual(merge_sort(arr, lambda x: x), [1,2,3])
-        self.assertEqual(quick_sort(arr, lambda x: x), [1,2,3])
+        c = Course("CSE2000", 3, 10)
+
+        s1 = Student(3, "Charlie")
+        s2 = Student(1, "Alice")
+        s3 = Student(2, "Bob")
+
+        c.request_enroll(s1, "2026-01-03")
+        c.request_enroll(s2, "2026-01-01")
+        c.request_enroll(s3, "2026-01-02")
+
+        sorted_merge = c.sort_roster_by_id_merge()
+        self.assertEqual([r.student.student_id for r in sorted_merge], [1,2,3])
+        
+        sorted_quick = c.sort_roster_by_id_quick()
+        self.assertEqual([r.student.student_id for r in sorted_quick], [1,2,3])
 
 
 if __name__ == "__main__":
