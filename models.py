@@ -324,6 +324,7 @@ class LinkedQueue:
         return f"LinkedQueue([{', '.join(items)}])"
 
 def merge_sort(items, key):
+    # mergesort implementation that takes a key function to determine the sorting criteria - Vikram Kent
     if len(items) <= 1:
         return items
 
@@ -350,6 +351,7 @@ def merge_sort(items, key):
 
 
 def quick_sort(items, key):
+    # quicksort implementation that takes a key function to determine the sorting criteria - Vikram Kent
     if len(items) <= 1:
         return items
 
