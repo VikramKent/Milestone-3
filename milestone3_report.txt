@@ -1,0 +1,8 @@
+milestone3_report.txt
+The time complexity for put and get in the HashMap is O(1) on average because keys are hashed directly into buckets. In the worst case, it becomes O(n) if many keys collide into the same bucket.
+
+Merge Sort runs in O(n log n) time in all cases. It always splits the list evenly and merges the results, so its performance is consistent.
+
+Quick Sort runs in O(n log n) on average, but O(n²) in the worst case if the pivot creates uneven splits.
+
+Merge Sort is more reliable and consistent, while Quick Sort is usually faster in practice but less predictable.
