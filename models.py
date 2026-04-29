@@ -54,6 +54,11 @@ class HashMap:
         
         return default
     
+    def items(self):
+        for bucket in self._buckets:
+            for key, value in bucket:
+                yield key, value
+
     def is_empty(self):
         """ Check if the HashMap is empty - Jack Barbuto"""
         return self._length == 0
@@ -64,7 +69,12 @@ class HashMap:
     
     def __contains__(self, key):
         """Checks if key exists in the map - Jack Barbuto"""
-        return self.contains(key)
+
+        bucket = self._buckets[self._hash(key)]
+        for k, _ in bucket:
+            if k == key:
+                return True
+        return False
 
 class Course:
     def __init__(self, course_code, credits, capacity):
@@ -162,7 +172,29 @@ class Course:
             replacement_date = enroll_date_for_replacement or datetime.date.today()
             self.request_enroll(next_student, replacement_date)
 
-    
+    def sort_roster_by_id_merge(self):
+        self.enrolled_roster = merge_sort(self.enrolled_roster, lambda record: record.student.student_id)
+        return self.enrolled_roster
+
+    def sort_roster_by_name_merge(self):
+        self.enrolled_roster = merge_sort(self.enrolled_roster, lambda record: record.student.name)
+        return self.enrolled_roster
+
+    def sort_roster_by_date_merge(self):
+        self.enrolled_roster = merge_sort(self.enrolled_roster, lambda record: record.enroll_date)
+        return self.enrolled_roster
+
+    def sort_roster_by_id_quick(self):
+        self.enrolled_roster = quick_sort(self.enrolled_roster, lambda record: record.student.student_id)
+        return self.enrolled_roster
+
+    def sort_roster_by_name_quick(self):
+        self.enrolled_roster = quick_sort(self.enrolled_roster, lambda record: record.student.name)
+        return self.enrolled_roster
+
+    def sort_roster_by_date_quick(self):
+        self.enrolled_roster = quick_sort(self.enrolled_roster, lambda record: record.enroll_date)
+        return self.enrolled_roster
 
 class Student:
     def __init__(self, student_id, name):
@@ -291,5 +323,45 @@ class LinkedQueue:
             node = node.next
         return f"LinkedQueue([{', '.join(items)}])"
 
+def merge_sort(items, key):
+    if len(items) <= 1:
+        return items
 
+    middle = len(items) // 2
+    left = merge_sort(items[:middle], key)
+    right = merge_sort(items[middle:], key)
+
+    sorted_items = []
+    i = 0
+    j = 0
+
+    while i < len(left) and j < len(right):
+        if key(left[i]) <= key(right[j]):
+            sorted_items.append(left[i])
+            i += 1
+        else:
+            sorted_items.append(right[j])
+            j += 1
+
+    sorted_items += left[i:]
+    sorted_items += right[j:]
+
+    return sorted_items
+
+
+def quick_sort(items, key):
+    if len(items) <= 1:
+        return items
+
+    pivot = items[0]
+    small = []
+    big = []
+
+    for item in items[1:]:
+        if key(item) <= key(pivot):
+            small.append(item)
+        else:
+            big.append(item)
+
+    return quick_sort(small, key) + [pivot] + quick_sort(big, key)
 
